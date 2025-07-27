@@ -1,6 +1,7 @@
 package graph;
 
 import heap.Heap;
+import java.util.PriorityQueue;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,7 +34,12 @@ public class ShortestPaths {
 
         // TODO 1: implement Dijkstra's algorithm to fill paths with
         // shortest-path data for each Node reachable from origin.
+        Heap frontier = new Heap();
+        frontier.add(origin, 0);
+        
+        while (frontier.size() >= 1) {
 
+        }
     }
 
     /** Returns the length of the shortest path from the origin to destination.
@@ -43,7 +49,11 @@ public class ShortestPaths {
     public double shortestPathLength(Node destination) {
         // TODO 2 - implement this method to fetch the shortest path length
         // from the paths data computed by Dijkstra's algorithm.
-        throw new UnsupportedOperationException();
+        if (paths.get(destination) == null) {
+            return Double.POSITIVE_INFINITY;
+        } else {
+            return paths.get(destination).distance;
+        }
     }
 
     /** Returns a LinkedList of the nodes along the shortest path from origin
@@ -56,7 +66,13 @@ public class ShortestPaths {
         // TODO 3 - implement this method to reconstruct sequence of Nodes
         // along the shortest path from the origin to destination using the
         // paths data computed by Dijkstra's algorithm.
-        throw new UnsupportedOperationException();
+        if (paths.get(destination) == null) {
+            return null;
+        }
+
+        LinkedList<Node> list = new LinkedList<>();
+        //TODO
+        return list;
     }
 
 
