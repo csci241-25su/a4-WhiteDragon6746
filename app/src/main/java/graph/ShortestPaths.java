@@ -42,6 +42,8 @@ public class ShortestPaths {
 
         while (frontier.size() > 0) {
             Node f = (Node) frontier.poll();
+            //TODO
+            return;
         }
     }
 
