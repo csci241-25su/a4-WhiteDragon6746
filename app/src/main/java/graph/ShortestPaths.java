@@ -1,8 +1,8 @@
 package graph;
 
 import heap.Heap;
-import java.util.PriorityQueue;
 import java.util.Map;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.io.File;
@@ -34,21 +34,24 @@ public class ShortestPaths {
 
         // TODO 1: implement Dijkstra's algorithm to fill paths with
         // shortest-path data for each Node reachable from origin.
-        Heap frontier = new Heap();
-        frontier.add(origin, 0);
-        
-        while (frontier.size() >= 1) {
+        paths = new HashMap<Node, PathData>();
+        Heap<Node, Double> frontier = new Heap<Node, Double>();
+        frontier.add(origin, 0.0);
+        PathData oPath = new PathData(0.0, null);
+        paths.put(origin, oPath);
 
+        while (frontier.size() > 0) {
+            Node f = (Node) frontier.poll();
         }
     }
 
     /** Returns the length of the shortest path from the origin to destination.
+     * To do so fetches the shortest path length from the paths data computed 
+     * by Dijkstra's algorithm.
      * If no path exists, return Double.POSITIVE_INFINITY.
      * Precondition: destination is a node in the graph, and compute(origin)
      * has been called. */
     public double shortestPathLength(Node destination) {
-        // TODO 2 - implement this method to fetch the shortest path length
-        // from the paths data computed by Dijkstra's algorithm.
         if (paths.get(destination) == null) {
             return Double.POSITIVE_INFINITY;
         } else {
@@ -59,20 +62,26 @@ public class ShortestPaths {
     /** Returns a LinkedList of the nodes along the shortest path from origin
      * to destination. This path includes the origin and destination. If origin
      * and destination are the same node, it is included only once.
+     * To do this, reconstructs sequence of Nodes along the shortest path from
+     * the origin to destination using the paths data computed by Dijkstra's algorithm.
      * If no path to it exists, return null.
      * Precondition: destination is a node in the graph, and compute(origin)
      * has been called. */
     public LinkedList<Node> shortestPath(Node destination) {
-        // TODO 3 - implement this method to reconstruct sequence of Nodes
-        // along the shortest path from the origin to destination using the
-        // paths data computed by Dijkstra's algorithm.
         if (paths.get(destination) == null) {
             return null;
         }
 
-        LinkedList<Node> list = new LinkedList<>();
-        //TODO
-        return list;
+        LinkedList<Node> sList = new LinkedList<>();
+        Node c = destination;
+        while (paths.get(c) != null) {
+            sList.add(c);
+            c = paths.get(c).previous;
+        }
+
+        // Reverses a linked list using java.util.Collections
+        Collections.reverse(sList);
+        return sList;
     }
 
 
