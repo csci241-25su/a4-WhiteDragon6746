@@ -1,5 +1,11 @@
 package graph;
-
+/*
+ * Author: Ashton Finch
+ * Date: 7/29/25
+ * Purpose: A program to simulate Dijktra's Algorithm.
+ * Uses HashMaps and heaps to keep track of data. Used to
+ * find the shortest paths for graph traversals.
+ */
 import heap.Heap;
 import java.util.Map;
 import java.util.Collections;
@@ -31,8 +37,6 @@ public class ShortestPaths {
      * backpointer to the previous node on the shortest path.
      * Precondition: origin is a node in the Graph.*/
     public void compute(Node origin) {
-        // TODO 1: implement Dijkstra's algorithm to fill paths with
-        // shortest-path data for each Node reachable from origin.
         paths = new HashMap<>();
         Heap<Node, Double> frontier = new Heap<>();
         frontier.add(origin, 0.0);
