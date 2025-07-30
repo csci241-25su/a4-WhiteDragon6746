@@ -4,6 +4,7 @@ import heap.Heap;
 import java.util.Map;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,20 +31,31 @@ public class ShortestPaths {
      * backpointer to the previous node on the shortest path.
      * Precondition: origin is a node in the Graph.*/
     public void compute(Node origin) {
-        paths = new HashMap<Node,PathData>();
-
         // TODO 1: implement Dijkstra's algorithm to fill paths with
         // shortest-path data for each Node reachable from origin.
-        paths = new HashMap<Node, PathData>();
-        Heap<Node, Double> frontier = new Heap<Node, Double>();
+        paths = new HashMap<>();
+        Heap<Node, Double> frontier = new Heap<>();
         frontier.add(origin, 0.0);
-        PathData oPath = new PathData(0.0, null);
-        paths.put(origin, oPath);
+        PathData originPath = new PathData(0.0, null);
+        paths.put(origin, originPath);
 
         while (frontier.size() > 0) {
             Node f = (Node) frontier.poll();
-            //TODO
-            return;
+
+            for (Map.Entry<Node, Double> set : f.getNeighbors().entrySet()) {
+                Node w = set.getKey();
+                Double fd = paths.get(f).distance;
+                Double wd = fd + set.getValue();
+                if (!frontier.contains(w) && !paths.containsKey(w)) {
+                    PathData pd = new PathData(wd, f);
+                    paths.put(w, pd);
+                    frontier.add(w, wd);
+                } else if (wd < paths.get(w).distance) {
+                    PathData pd = new PathData(wd, f);
+                    paths.put(w, pd);
+                    frontier.changePriority(w, wd);
+                }
+            }
         }
     }
 
@@ -125,37 +137,52 @@ public class ShortestPaths {
     }
 
     public static void main(String[] args) {
-      // read command line args
-      String fileType = args[0];
-      String fileName = args[1];
-      String origCode = args[2];
+        // read command line args
+        String fileType = args[0];
+        String fileName = args[1];
+        String origCode = args[2];
 
-      String destCode = null;
-      if (args.length == 4) {
-          destCode = args[3];
-      }
+        String destCode = null;
+        if (args.length == 4) {
+            destCode = args[3];
+        }
 
-      // parse a graph with the given type and filename
-      Graph graph;
-      try {
-          graph = parseGraph(fileType, fileName);
-      } catch (FileNotFoundException e) {
-          System.out.println("Could not open file " + fileName);
-          return;
-      }
-      graph.report();
+        // parse a graph with the given type and filename
+        Graph graph;
+        try {
+            graph = parseGraph(fileType, fileName);
+        } catch (FileNotFoundException e) {
+            System.out.println("Could not open file " + fileName);
+            return;
+        }
+        graph.report();
 
 
-      // TODO 4: create a ShortestPaths object, use it to compute shortest
-      // paths data from the origin node given by origCode.
+        // ShortestPaths object used it to compute shortest
+        // paths data from the origin node given by origCode.
+        ShortestPaths sp = new ShortestPaths();
+        sp.compute(graph.getNode(origCode));
 
-      // TODO 5:
-      // If destCode was not given, print each reachable node followed by the
-      // length of the shortest path to it from the origin.
+        // If destCode was not given, prints each reachable node followed by the
+        // length of the shortest path to it from the origin.
+        if (destCode == null) {
+            for (Node n : sp.paths.keySet()) {
+                System.out.println(n.getId() + ": " + sp.paths.get(n).distance);
+            }
 
-      // TODO 6:
-      // If destCode was given, print the nodes in the path from
-      // origCode to destCode, followed by the total path length
-      // If no path exists, print a message saying so.
+        // If destCode was given, prints the nodes in the path from
+        // origCode to destCode, followed by the total path length
+        // If no path exists, prints a message saying so.
+        } else {
+            LinkedList<Node> path = sp.shortestPath(graph.getNode(destCode));
+            if (path == null) {
+                System.out.println("No path exists.");
+            } else {
+                for (Node n : path) {
+                    System.out.print(n.getId() + " ");
+                }
+                System.out.println(sp.shortestPathLength(graph.getNode(destCode)));
+            }
+        }
     }
 }
