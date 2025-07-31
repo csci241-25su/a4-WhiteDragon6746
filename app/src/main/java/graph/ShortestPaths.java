@@ -44,7 +44,7 @@ public class ShortestPaths {
         paths.put(origin, originPath);
 
         while (frontier.size() > 0) {
-            Node f = (Node) frontier.poll();
+            Node f = frontier.poll();
 
             for (Map.Entry<Node, Double> set : f.getNeighbors().entrySet()) {
                 Node w = set.getKey();

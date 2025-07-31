@@ -1,5 +1,10 @@
 package graph;
-
+/*
+ * Author: Ashton Finch
+ * Date: 7/29/25
+ * Purpose: A program to test Dijktra's Algorithm.
+ * Used to tests if ShortestPaths.java is correctly working.
+ */
 import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
 
@@ -191,11 +196,12 @@ public class ShortestPathsTest {
         Graph g = loadBasicGraph("Simple2.txt");
         g.report();
         ShortestPaths sp = new ShortestPaths();
-        Node a = g.getNode("D");
-        sp.compute(a);
-
-        // D to Node B
         Node b = g.getNode("B");
-        assertNull(sp.shortestPath(b));
+        sp.compute(b);
+        Node d = g.getNode("D");
+        // D to Node B
+        
+        assertNull(sp.shortestPath(d));
+        assertEquals(sp.shortestPathLength(d), Double.POSITIVE_INFINITY, 1e-6);
     }
 }
