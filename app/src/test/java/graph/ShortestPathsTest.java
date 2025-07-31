@@ -1,5 +1,10 @@
 package graph;
-
+/*
+ * Author: Ashton Finch
+ * Date: 7/29/25
+ * Purpose: A program to test Dijktra's Algorithm.
+ * Used to tests if ShortestPaths.java is correctly working.
+ */
 import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
 
@@ -68,4 +73,135 @@ public class ShortestPathsTest {
 
     /* Pro tip: unless you include @Test on the line above your method header,
      * gradle test will not run it! This gets me every time. */
+    @Test
+    public void test02Simple01() {
+        Graph g = loadBasicGraph("Simple1.txt");
+        g.report();
+        ShortestPaths sp = new ShortestPaths();
+        Node a = g.getNode("S");
+        sp.compute(a);
+
+        // S to Node A
+        Node b = g.getNode("A");
+        LinkedList<Node> abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(),3);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 8.0, 1e-6);
+
+        // S to Node B
+        b = g.getNode("B");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(), 4);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 9.0, 1e-6);
+
+        // S to Node C
+        b = g.getNode("C");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(), 2);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 5.0, 1e-6);
+
+        // S to Node D
+        b = g.getNode("D");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(), 3);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 7.0, 1e-6);
+    }
+
+    @Test
+    public void test03Simple01() {
+        Graph g = loadBasicGraph("Simple2.txt");
+        g.report();
+        ShortestPaths sp = new ShortestPaths();
+        Node a = g.getNode("A");
+        sp.compute(a);
+
+        // A to Node B
+        Node b = g.getNode("B");
+        LinkedList<Node> abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(), 4);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 5.0, 1e-6);
+
+        // A to Node C
+        b = g.getNode("C");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(), 4);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 7.0, 1e-6);
+
+        // A to Node D
+        b = g.getNode("D");
+        assertNull(sp.shortestPath(b));
+
+        // A to Node E
+        b = g.getNode("E");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(),2);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 1.0, 1e-6);
+        
+        // A to Node F
+        b = g.getNode("F");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(),3);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 4.0, 1e-6);
+        
+        // A to Node G
+        b = g.getNode("G");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(),6);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 8.0, 1e-6);
+        
+        // A to Node H
+        b = g.getNode("H");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(),2);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 10.0, 1e-6);
+        
+        // A to Node I
+        b = g.getNode("I");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(),4);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 5.0, 1e-6);
+        
+        // A to Node J
+        b = g.getNode("J");
+        abPath = sp.shortestPath(b);
+        assertEquals(abPath.size(),5);
+        assertEquals(abPath.getFirst(), a);
+        assertEquals(abPath.getLast(),  b);
+        assertEquals(sp.shortestPathLength(b), 7.0, 1e-6);
+    }
+
+    @Test
+    public void test03Simple02() {
+        Graph g = loadBasicGraph("Simple2.txt");
+        g.report();
+        ShortestPaths sp = new ShortestPaths();
+        Node b = g.getNode("B");
+        sp.compute(b);
+        Node d = g.getNode("D");
+        // D to Node B
+        
+        assertNull(sp.shortestPath(d));
+        assertEquals(sp.shortestPathLength(d), Double.POSITIVE_INFINITY, 1e-6);
+    }
 }
